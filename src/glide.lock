@@ -1,0 +1,26 @@
+hash: d7a8914745a20215a36cb4ece65cb7e6f4461c7271033639bec1145644054a5e
+updated: 2018-11-10T18:25:41.200650205+08:00
+imports:
+- name: github.com/attic-labs/noms
+  version: 72cc4fd834487792f202ccb9b2668f96f12ef91e
+  subpackages:
+  - go/d
+- name: github.com/attic-labs/testify
+  version: 4aeb20c38a7bce059590a23553f8a84808c9902f
+  subpackages:
+  - assert
+- name: github.com/davecgh/go-spew
+  version: 04cdfd42973bb9c8589fd6a731800cf222fde1a9
+  subpackages:
+  - spew
+- name: github.com/juju/gnuflag
+  version: 2ce1bb71843d6d179b3f1c1c9cb4a72cd067fc65
+- name: github.com/pmezard/go-difflib
+  version: d8ed2627bdf02c080bf22230dbb337003b7aba2d
+  subpackages:
+  - difflib
+- name: gopkg.in/attic-labs/noms.v7
+  version: 72cc4fd834487792f202ccb9b2668f96f12ef91e
+  subpackages:
+  - go/util/exit
+testImports: []

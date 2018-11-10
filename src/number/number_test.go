@@ -24,30 +24,36 @@
 package number
 
 import (
-	assert "github.com/attic-labs/noms/go/d"
+	"testing"
 )
 
-func maxCommonDivisor(m, n int) int {
-	assert.PanicIfTrue(m < 2 || n < 2)
-
-	if m < n {
-		m, n = n, m
+func TestMaxCommonDivisor(t *testing.T) {
+	var data = []struct {
+		a, b   int
+		expect int
+	}{
+		{-1, 0, 0},
+		{-1, -1, 0},
+		{-8, 1, 0},
+		{1, 0, 0},
+		{0, 1, 0},
+		{1, 1, 1},
+		{2, 3, 1},
+		{119, 342, 1},
+		{111, 999, 111},
+		{18, 15, 3},
+		{2147483647, 2147483647, 2147483647},
+		{2147483647, 30, 1},
+		{1001, 100101, 1},
+		{24, 18, 6},
+		{49, 63, 7},
 	}
 
-	for r := 1; r != 0; m, n = n, r {
-		r = m % n
-	}
+	for _, d := range data {
+		actual := MaxCommonDivisor(d.a, d.b)
 
-	return m
-}
-
-// MaxCommonDivisor compute the max common divisor from given 2 integer
-func MaxCommonDivisor(m, n int) int {
-	if m <= 0 || n <= 0 {
-		return 0
-	} else if m == 1 || n == 1 {
-		return 1
-	} else {
-		return maxCommonDivisor(m, n)
+		if actual != d.expect {
+			t.Errorf("MaxCommonDivisor(%v, %v) == %v, but actual %v.", d.a, d.b, d.expect, actual)
+		}
 	}
 }

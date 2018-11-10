@@ -1,0 +1,10 @@
+language: golang
+
+script:
+  - make update
+  - make install
+  - make test
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
+

@@ -1,0 +1,6 @@
+package: .
+import:
+- package: github.com/attic-labs/noms
+  version: ^7.4.0
+  subpackages:
+  - go/d

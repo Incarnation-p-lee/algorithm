@@ -24,12 +24,11 @@
 package number
 
 import (
-	// TODO: dependency not well investigated
-	// "github.com/attic-labs/noms/go/d"
+	assert "github.com/attic-labs/noms/go/d"
 )
 
-func maxCommonDivisorInternal(a, b int) int {
-	// PanicIfTrue(a < 2 || b < 2)
+func maxCommonDivisor(a, b int) int {
+	assert.PanicIfTrue(a < 2 || b < 2)
 
 	m, n := a, b
 
@@ -44,12 +43,14 @@ func maxCommonDivisorInternal(a, b int) int {
 	return n
 }
 
+// MaxCommonDivisor compute the max common divisor from given 2 integer
 func MaxCommonDivisor(a, b int) int {
-	if a == 0 || b == 0 {
+	if a <= 0 || b <= 0 {
 		return 0
 	} else if a == 1 || b == 1 {
 		return 1
 	} else {
-		return maxCommonDivisorInternal(a, b)
+		return maxCommonDivisor(a, b)
 	}
 }
+

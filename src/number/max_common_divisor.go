@@ -27,14 +27,14 @@ import (
 	assert "github.com/attic-labs/noms/go/d"
 )
 
-func maxCommonDivisor(m, n int) int {
+func maxCommonDivisor(m, n uint) uint {
 	assert.PanicIfTrue(m < 2 || n < 2)
 
 	if m < n {
 		m, n = n, m
 	}
 
-	for r := 1; r != 0; m, n = n, r {
+	for r := uint(1); r != 0; m, n = n, r {
 		r = m % n
 	}
 
@@ -44,6 +44,17 @@ func maxCommonDivisor(m, n int) int {
 // MaxCommonDivisor compute the max common divisor from given 2 integer
 func MaxCommonDivisor(m, n int) int {
 	if m <= 0 || n <= 0 {
+		return 0
+	} else if m == 1 || n == 1 {
+		return 1
+	} else {
+		return int(maxCommonDivisor(uint(m), uint(n)))
+	}
+}
+
+// MaxCommonDivisorUnsigned compute the max common divisor from given 2 unsigned integer
+func MaxCommonDivisorUnsigned(m, n uint) uint {
+	if m == 0 || n == 0 {
 		return 0
 	} else if m == 1 || n == 1 {
 		return 1

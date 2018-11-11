@@ -24,6 +24,7 @@
 package number
 
 import (
+	"math"
 	"testing"
 )
 
@@ -42,8 +43,9 @@ func TestMaxCommonDivisor(t *testing.T) {
 		{119, 342, 1},
 		{111, 999, 111},
 		{18, 15, 3},
-		{2147483647, 2147483647, 2147483647},
+		{math.MaxInt32, math.MaxInt32, math.MaxInt32},
 		{2147483647, 30, 1},
+		{math.MaxInt32, 1024, 1},
 		{1001, 100101, 1},
 		{24, 18, 6},
 		{49, 63, 7},
@@ -53,7 +55,40 @@ func TestMaxCommonDivisor(t *testing.T) {
 		actual := MaxCommonDivisor(d.a, d.b)
 
 		if actual != d.expect {
-			t.Errorf("MaxCommonDivisor(%v, %v) == %v, but actual %v.", d.a, d.b, d.expect, actual)
+			t.Errorf("MaxCommonDivisor(%v, %v) == %v, but actual %v.",
+				d.a, d.b, d.expect, actual)
+		}
+	}
+}
+
+func TestMaxCommonDivisorUnsigned(t *testing.T) {
+	var data = []struct {
+		a, b   uint
+		expect uint
+	}{
+		{0, 0, 0},
+		{1, 0, 0},
+		{1, 1, 1},
+		{1, 0, 0},
+		{0, 1, 0},
+		{2, 3, 1},
+		{119, 342, 1},
+		{111, 999, 111},
+		{18, 15, 3},
+		{math.MaxUint32, math.MaxUint32, math.MaxUint32},
+		{2147483647, 30, 1},
+		{math.MaxUint32, 1024, 1},
+		{1001, 100101, 1},
+		{24, 18, 6},
+		{49, 63, 7},
+	}
+
+	for _, d := range data {
+		actual := MaxCommonDivisorUnsigned(d.a, d.b)
+
+		if actual != d.expect {
+			t.Errorf("MaxCommonDivisorUnsigned(%v, %v) == %v, but actual %v.",
+				d.a, d.b, d.expect, actual)
 		}
 	}
 }

@@ -1,6 +1,7 @@
-SRC_DIR  :=./src/
-PKG_DIR  := ./pkg/
-PACKAGES :=number
+SRC_DIR   :=./src/
+PKG_DIR   := ./pkg/
+PACKAGES  :=number
+SRC_FILES :=$(shell find $(SRC_DIR) -name *.go | grep -v vendor)
 
 .PHONY: install test update help
 
@@ -18,14 +19,15 @@ help:
 	@echo
 
 update:
-	@export GOPATH=`pwd`
-	@cd $(SRC_DIR) && glide up @cd -
+	@export GOPATH=`pwd` && cd $(SRC_DIR) && glide up cd -
 
 install:
-	@export GOPATH=`pwd`
 	@rm -rf $(PKG_DIR)
-	go install -buildmode=shared -linkshared $(PACKAGES)
+	@export GOPATH=`pwd` \
+        && gofmt -w $(SRC_FILES) \
+        && go install -buildmode=shared -linkshared $(PACKAGES)
 
 test:
-	export GOPATH=`pwd`
+	@export GOPATH=`pwd` \
+        && go test -coverprofile cover.out $(PACKAGES)
 

@@ -1,0 +1,15 @@
+language: go
+
+before_script:
+  - curl https://glide.sh/get | sh
+  - export GOPATH=`pwd`
+  - go install -buildmode=shared -linkshared std
+
+script:
+  - make update
+  - make install
+  - make test
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
+

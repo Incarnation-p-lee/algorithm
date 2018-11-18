@@ -92,3 +92,43 @@ func TestMaxCommonDivisorUnsigned(t *testing.T) {
 		}
 	}
 }
+
+func TestMaxCommonDivisorAsync(t *testing.T) {
+	var data = []struct {
+		a, b   int
+		expect int
+	}{
+		{-1, 0, 0},
+		{-1, -1, 0},
+		{-8, 1, 0},
+		{1, 0, 0},
+		{0, 1, 0},
+		{1, 1, 1},
+		{2, 3, 1},
+		{119, 342, 1},
+		{111, 999, 111},
+		{18, 15, 3},
+		{math.MaxInt32, math.MaxInt32, math.MaxInt32},
+		{2147483647, 30, 1},
+		{math.MaxInt32, 1024, 1},
+		{1001, 100101, 1},
+		{24, 18, 6},
+		{49, 63, 7},
+	}
+
+	c := make(chan int)
+	defer close(c)
+
+	for _, d := range data {
+		go MaxCommonDivisorAsync(c)
+
+		c <- d.a
+		c <- d.b
+		actual := <-c
+
+		if actual != d.expect {
+			t.Errorf("MaxCommonDivisorAsync(%v, %v) == %v, but actual %v.",
+				d.a, d.b, d.expect, actual)
+		}
+	}
+}

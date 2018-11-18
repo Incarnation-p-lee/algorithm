@@ -29,5 +29,6 @@ install:
 
 test:
 	@export GOPATH=`pwd` \
-        && go test -coverprofile cover.out $(PACKAGES)
+        && gofmt -w $(SRC_FILES) \
+        && go test -v -coverprofile cover.out $(PACKAGES)
 

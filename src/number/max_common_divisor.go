@@ -62,3 +62,7 @@ func MaxCommonDivisorUnsigned(m, n uint) uint {
 		return maxCommonDivisor(m, n)
 	}
 }
+
+func MaxCommonDivisorAsync(c chan int) {
+	c <- MaxCommonDivisor(<-c, <-c)
+}

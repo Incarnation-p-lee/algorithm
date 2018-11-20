@@ -68,3 +68,10 @@ func MaxCommonDivisorUnsigned(m, n uint) uint {
 func MaxCommonDivisorAsync(c chan int) {
 	c <- MaxCommonDivisor(<-c, <-c)
 }
+
+// MaxCommonDivisorUnsignedAsync will wait the value from channel, take two uint
+// and compute max common divisor. After finished, will send the result to given
+// channel
+func MaxCommonDivisorUnsignedAsync(c chan uint) {
+	c <- MaxCommonDivisorUnsigned(<-c, <-c)
+}

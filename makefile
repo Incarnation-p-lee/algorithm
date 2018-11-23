@@ -30,7 +30,8 @@ install:
 
 test:$(PROFILES)
 	@export GOPATH=`pwd` && gofmt -w $(SRC_FILES)
+	@cat $(PROFILES) > cover.out
 
 $(PROFILES):%.cover.out:%
-	@export GOPATH=`pwd` && go test -v -coverprofile $@ $<
+	@export GOPATH=`pwd` && go test -v -coverprofile $@ -covermode=atomic $<
 

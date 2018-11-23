@@ -1,7 +1,7 @@
 SRC_DIR   :=./src/
 PKG_DIR   := ./pkg/
 PACKAGES  :=number assert
-PROFILES  :=$(addsuffix .cover, $(PACKAGES))
+PROFILES  :=$(addsuffix .out, $(addsuffix .cover, $(PACKAGES)))
 SRC_FILES :=$(shell find $(SRC_DIR) -name *.go | grep -v vendor)
 
 .PHONY: install test update help $(PACKAGES)
@@ -31,6 +31,6 @@ install:
 test:$(PROFILES)
 	@export GOPATH=`pwd` && gofmt -w $(SRC_FILES)
 
-$(PROFILES):%.cover:%
+$(PROFILES):%.cover.out:%
 	@export GOPATH=`pwd` && go test -v -coverprofile $@ $<
 

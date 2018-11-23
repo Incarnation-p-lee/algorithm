@@ -24,6 +24,7 @@
 package number
 
 import (
+	"assert"
 	"math"
 	"testing"
 )
@@ -54,10 +55,7 @@ func TestMaxCommonDivisor(t *testing.T) {
 	for _, d := range data {
 		actual := MaxCommonDivisor(d.a, d.b)
 
-		if actual != d.expect {
-			t.Errorf("MaxCommonDivisor(%v, %v) == %v, but actual %v.",
-				d.a, d.b, d.expect, actual)
-		}
+		assert.That{actual, t}.IsEqualsTo(d.expect)
 	}
 }
 
@@ -86,10 +84,7 @@ func TestMaxCommonDivisorUnsigned(t *testing.T) {
 	for _, d := range data {
 		actual := MaxCommonDivisorUnsigned(d.a, d.b)
 
-		if actual != d.expect {
-			t.Errorf("MaxCommonDivisorUnsigned(%v, %v) == %v, but actual %v.",
-				d.a, d.b, d.expect, actual)
-		}
+		assert.That{actual, t}.IsEqualsTo(d.expect)
 	}
 }
 
@@ -126,10 +121,7 @@ func TestMaxCommonDivisorAsync(t *testing.T) {
 		c <- d.b
 		actual := <-c
 
-		if actual != d.expect {
-			t.Errorf("MaxCommonDivisorAsync(%v, %v) == %v, but actual %v.",
-				d.a, d.b, d.expect, actual)
-		}
+		assert.That{actual, t}.IsEqualsTo(d.expect)
 	}
 }
 
@@ -165,9 +157,6 @@ func TestMaxCommonDivisorUnsignedAsync(t *testing.T) {
 		c <- d.b
 		actual := <-c
 
-		if actual != d.expect {
-			t.Errorf("MaxCommonDivisorUnsignedAsync(%v, %v) == %v, but actual %v.",
-				d.a, d.b, d.expect, actual)
-		}
+		assert.That{actual, t}.IsEqualsTo(d.expect)
 	}
 }

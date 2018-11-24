@@ -1,9 +1,10 @@
 SRC_DIR   :=./src/
 PKG_DIR   := ./pkg/
-PACKAGES  :=number
+PACKAGES  :=number assert
+PROFILES  :=$(addsuffix .out, $(addsuffix .cover, $(PACKAGES)))
 SRC_FILES :=$(shell find $(SRC_DIR) -name *.go | grep -v vendor)
 
-.PHONY: install test update help
+.PHONY: install test update help $(PACKAGES)
 
 help:
 	@echo Usage
@@ -27,8 +28,10 @@ install:
         && gofmt -w $(SRC_FILES) \
         && go install -buildmode=shared -linkshared $(PACKAGES)
 
-test:
-	@export GOPATH=`pwd` \
-        && gofmt -w $(SRC_FILES) \
-        && go test -v -coverprofile cover.out $(PACKAGES)
+test:$(PROFILES)
+	@export GOPATH=`pwd` && gofmt -w $(SRC_FILES)
+	@cat $(PROFILES) > cover.out
+
+$(PROFILES):%.cover.out:%
+	@export GOPATH=`pwd` && go test -v -coverprofile $@ -covermode=atomic $<
 

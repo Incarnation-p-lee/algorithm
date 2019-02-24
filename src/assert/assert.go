@@ -24,6 +24,7 @@
 package assert
 
 import (
+	"reflect"
 	"testing"
 )
 
@@ -40,27 +41,27 @@ type Assertion interface {
 // error if not equals.
 func (d That) IsEqualsTo(expect interface{}) {
 	switch expect := expect.(type) {
+	case bool:
+
 	case int:
-		isEqualsToInt(expect, &d)
+	case int32:
+	case int64:
+
 	case uint:
-		isEqualsToUint(expect, &d)
+	case uint32:
+	case uint64:
+
+	case float32:
+	case float64:
+		isEqualsToPrimitive(expect, &d)
 	default:
 		panic("Not implemented yet.")
 	}
 }
 
-func isEqualsToInt(expect int, d *That) {
-	v, ok := d.Value.(int)
-
-	if !ok {
-		d.T.Errorf("Expecting instance type %T, but actually got %T", expect, v)
-	} else if v != expect {
-		d.T.Errorf("Expecting instance value %v, but actually got %v", expect, v)
-	}
-}
-
-func isEqualsToUint(expect uint, d *That) {
-	v, ok := d.Value.(uint)
+func isEqualsToPrimitive(expect interface{}, d *That) {
+	ok := reflect.TypeOf(d.Value) == reflect.TypeOf(expect)
+	v := d.Value
 
 	if !ok {
 		d.T.Errorf("Expecting instance type %T, but actually got %T", expect, v)

@@ -1,10 +1,17 @@
-SRC_DIR   :=./src/
-PKG_DIR   := ./pkg/
+SRC_DIR   :=src/
+PKG_DIR   :=pkg/
 PACKAGES  :=number assert
-PROFILES  :=$(addsuffix .out, $(addsuffix .cover, $(PACKAGES)))
+PROFILES  :=$(addsuffix .cover.out, $(PACKAGES))
 SRC_FILES :=$(shell find $(SRC_DIR) -name *.go | grep -v vendor)
+GOPATH    :=$(shell pwd)
 
 .PHONY: install test update help $(PACKAGES)
+
+install:
+	@rm -rf $(PKG_DIR)
+	@export GOPATH=$(GOPATH) \
+        && gofmt -w $(SRC_FILES) \
+        && go install -buildmode=shared -linkshared $(PACKAGES)
 
 help:
 	@echo Usage
@@ -20,18 +27,13 @@ help:
 	@echo
 
 update:
-	@export GOPATH=`pwd` && cd $(SRC_DIR) && glide up cd -
-
-install:
-	@rm -rf $(PKG_DIR)
-	@export GOPATH=`pwd` \
-        && gofmt -w $(SRC_FILES) \
-        && go install -buildmode=shared -linkshared $(PACKAGES)
+	@export GOPATH=$(GOPATH) && cd $(SRC_DIR) && glide up cd -
 
 test:$(PROFILES)
-	@export GOPATH=`pwd` && gofmt -w $(SRC_FILES)
-	@cat $(PROFILES) > cover.out
+	@export GOPATH=$(GOPATH) && gofmt -w $(SRC_FILES)
+	@cat *.cover.out > cover.out
 
 $(PROFILES):%.cover.out:%
-	@export GOPATH=`pwd` && go test -v -coverprofile $@ -covermode=atomic $<
+	@export GOPATH=`pwd` \
+        && go test -v -coverprofile $$$$.cover.out -covermode=atomic $<
 

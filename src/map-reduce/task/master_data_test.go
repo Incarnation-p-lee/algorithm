@@ -21,43 +21,31 @@
 // SOFTWARE.
 //
 
-package assert
+package task
 
 import (
+	"assert"
 	"testing"
 )
 
-func TestIsEqualsToPrimitive(t *testing.T) {
-	That{false, t}.IsEqualsTo(false)
-	That{true, t}.IsEqualsTo(true)
+func TestGetNewWorkerId(t *testing.T) {
+	var data = []struct {
+		expect int32
+	}{
+		{1},
+		{2},
+		{3},
+		{4},
+		{5},
+		{6},
+		{7},
+		{8},
+		{9},
+	}
 
-	That{0, t}.IsEqualsTo(0)
-	That{1, t}.IsEqualsTo(1)
-	That{-1, t}.IsEqualsTo(-1)
+	for _, d := range data {
+		actual := getNewWorkerId()
 
-	That{int32(0), t}.IsEqualsTo(int32(0))
-	That{int32(1), t}.IsEqualsTo(int32(1))
-	That{int32(-1), t}.IsEqualsTo(int32(-1))
-
-	That{int64(0), t}.IsEqualsTo(int64(0))
-	That{int64(1), t}.IsEqualsTo(int64(1))
-	That{int64(-1), t}.IsEqualsTo(int64(-1))
-
-	That{uint(0), t}.IsEqualsTo(uint(0))
-	That{uint(1), t}.IsEqualsTo(uint(1))
-
-	That{uint32(0), t}.IsEqualsTo(uint32(0))
-	That{uint32(1), t}.IsEqualsTo(uint32(1))
-
-	That{uint64(0), t}.IsEqualsTo(uint64(0))
-	That{uint64(1), t}.IsEqualsTo(uint64(1))
-
-	That{float32(0.25), t}.IsEqualsTo(float32(0.25))
-	That{float32(1.8), t}.IsEqualsTo(float32(1.8))
-
-	That{float64(0.25), t}.IsEqualsTo(float64(0.25))
-	That{float64(1.8), t}.IsEqualsTo(float64(1.8))
-
-	That{"", t}.IsEqualsTo("")
-	That{"abcXYZ", t}.IsEqualsTo("abcXYZ")
+		assert.That{actual, t}.IsEqualsTo(d.expect)
+	}
 }

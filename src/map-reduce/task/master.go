@@ -21,43 +21,28 @@
 // SOFTWARE.
 //
 
-package assert
+package task
 
 import (
-	"testing"
+	"log"
+	"net/http"
+	"net/rpc"
+	// assert "github.com/attic-labs/noms/go/d"
 )
 
-func TestIsEqualsToPrimitive(t *testing.T) {
-	That{false, t}.IsEqualsTo(false)
-	That{true, t}.IsEqualsTo(true)
+type Master struct {
+	addr      string
+	operation *MasterOperation
+}
 
-	That{0, t}.IsEqualsTo(0)
-	That{1, t}.IsEqualsTo(1)
-	That{-1, t}.IsEqualsTo(-1)
+func (master *Master) Listen(addr string) {
+	op := new(MasterOperation)
 
-	That{int32(0), t}.IsEqualsTo(int32(0))
-	That{int32(1), t}.IsEqualsTo(int32(1))
-	That{int32(-1), t}.IsEqualsTo(int32(-1))
+	rpc.Register(op)
+	rpc.HandleHTTP()
 
-	That{int64(0), t}.IsEqualsTo(int64(0))
-	That{int64(1), t}.IsEqualsTo(int64(1))
-	That{int64(-1), t}.IsEqualsTo(int64(-1))
+	master.addr = addr
+	master.operation = op
 
-	That{uint(0), t}.IsEqualsTo(uint(0))
-	That{uint(1), t}.IsEqualsTo(uint(1))
-
-	That{uint32(0), t}.IsEqualsTo(uint32(0))
-	That{uint32(1), t}.IsEqualsTo(uint32(1))
-
-	That{uint64(0), t}.IsEqualsTo(uint64(0))
-	That{uint64(1), t}.IsEqualsTo(uint64(1))
-
-	That{float32(0.25), t}.IsEqualsTo(float32(0.25))
-	That{float32(1.8), t}.IsEqualsTo(float32(1.8))
-
-	That{float64(0.25), t}.IsEqualsTo(float64(0.25))
-	That{float64(1.8), t}.IsEqualsTo(float64(1.8))
-
-	That{"", t}.IsEqualsTo("")
-	That{"abcXYZ", t}.IsEqualsTo("abcXYZ")
+	log.Fatal(http.ListenAndServe(addr, nil))
 }

@@ -24,6 +24,7 @@
 package assert
 
 import (
+	// "log"
 	"reflect"
 	"testing"
 )
@@ -41,18 +42,7 @@ type Assertion interface {
 // error if not equals.
 func (d That) IsEqualsTo(expect interface{}) {
 	switch expect := expect.(type) {
-	case bool:
-
-	case int:
-	case int32:
-	case int64:
-
-	case uint:
-	case uint32:
-	case uint64:
-
-	case float32:
-	case float64:
+	case bool, int, int32, int64, uint, uint32, uint64, float32, float64, string:
 		isEqualsToPrimitive(expect, &d)
 	default:
 		panic("Not implemented yet.")

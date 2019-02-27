@@ -1,6 +1,6 @@
 SRC_DIR   :=src/
 PKG_DIR   :=pkg/
-PACKAGES  :=number assert
+PACKAGES  :=number assert map-reduce/task
 PROFILES  :=$(addsuffix .cover.out, $(PACKAGES))
 SRC_FILES :=$(shell find $(SRC_DIR) -name *.go | grep -v vendor)
 GOPATH    :=$(shell pwd)

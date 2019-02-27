@@ -21,43 +21,41 @@
 // SOFTWARE.
 //
 
-package assert
+package task
 
 import (
-	"testing"
+	"log"
+	"net/rpc"
 )
 
-func TestIsEqualsToPrimitive(t *testing.T) {
-	That{false, t}.IsEqualsTo(false)
-	That{true, t}.IsEqualsTo(true)
+type WorkerType int32
 
-	That{0, t}.IsEqualsTo(0)
-	That{1, t}.IsEqualsTo(1)
-	That{-1, t}.IsEqualsTo(-1)
+const (
+	Map = iota
+	Reduce
+)
 
-	That{int32(0), t}.IsEqualsTo(int32(0))
-	That{int32(1), t}.IsEqualsTo(int32(1))
-	That{int32(-1), t}.IsEqualsTo(int32(-1))
+const (
+	registryMethod = "MasterOperation.Register"
+)
 
-	That{int64(0), t}.IsEqualsTo(int64(0))
-	That{int64(1), t}.IsEqualsTo(int64(1))
-	That{int64(-1), t}.IsEqualsTo(int64(-1))
+type Worker struct {
+	Type WorkerType
+	Id   int32
+}
 
-	That{uint(0), t}.IsEqualsTo(uint(0))
-	That{uint(1), t}.IsEqualsTo(uint(1))
+func (worker *Worker) Register(addr string) {
+	client, err := rpc.DialHTTP("tcp", addr)
+	if err != nil {
+		log.Fatalf("Failed to dial address %s, %s", addr, err)
+	}
 
-	That{uint32(0), t}.IsEqualsTo(uint32(0))
-	That{uint32(1), t}.IsEqualsTo(uint32(1))
+	var response MasterResponse
+	err = client.Call(registryMethod, *worker, &response)
 
-	That{uint64(0), t}.IsEqualsTo(uint64(0))
-	That{uint64(1), t}.IsEqualsTo(uint64(1))
+	if err != nil {
+		log.Fatalf("Failed to register to master: %s, %s", addr, err)
+	}
 
-	That{float32(0.25), t}.IsEqualsTo(float32(0.25))
-	That{float32(1.8), t}.IsEqualsTo(float32(1.8))
-
-	That{float64(0.25), t}.IsEqualsTo(float64(0.25))
-	That{float64(1.8), t}.IsEqualsTo(float64(1.8))
-
-	That{"", t}.IsEqualsTo("")
-	That{"abcXYZ", t}.IsEqualsTo("abcXYZ")
+	worker.Id = response.Id
 }

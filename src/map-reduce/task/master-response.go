@@ -27,6 +27,7 @@ import (
 // "log"
 )
 
+// MasterResponse indicates the response when each Worker rpc call to Master node.
 type MasterResponse struct {
-	Id int32
+	ID int32
 }

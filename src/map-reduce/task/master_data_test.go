@@ -28,7 +28,7 @@ import (
 	"testing"
 )
 
-func TestGetNewWorkerId(t *testing.T) {
+func TestGetNewWorkerID(t *testing.T) {
 	var data = []struct {
 		expect int32
 	}{
@@ -44,7 +44,7 @@ func TestGetNewWorkerId(t *testing.T) {
 	}
 
 	for _, d := range data {
-		actual := getNewWorkerId()
+		actual := getNewWorkerID()
 
 		assert.That{actual, t}.IsEqualsTo(d.expect)
 	}

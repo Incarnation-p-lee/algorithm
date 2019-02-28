@@ -27,12 +27,12 @@ import (
 	"sync/atomic"
 )
 
-var workerId int32 = 0
+var workerID int32
 
-func resetWorkerId() {
-	atomic.AddInt32(&workerId, -workerId)
+func resetWorkerID() {
+	atomic.AddInt32(&workerID, -workerID)
 }
 
-func getNewWorkerId() int32 {
-	return atomic.AddInt32(&workerId, 1)
+func getNewWorkerID() int32 {
+	return atomic.AddInt32(&workerID, 1)
 }

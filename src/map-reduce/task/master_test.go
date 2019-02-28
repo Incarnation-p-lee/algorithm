@@ -48,7 +48,7 @@ func TestMasterListen(t *testing.T) {
 		{9},
 	}
 
-	resetWorkerId()
+	resetWorkerID()
 
 	addr := "localhost:1234"
 	master := new(Master)
@@ -61,7 +61,7 @@ func TestMasterListen(t *testing.T) {
 	for _, d := range data {
 		worker := new(Worker)
 		worker.Register("localhost:1234")
-		actual := worker.Id
+		actual := worker.ID
 
 		assert.That{actual, t}.IsEqualsTo(d.expect)
 	}

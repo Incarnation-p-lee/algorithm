@@ -27,13 +27,14 @@ import (
 // "log"
 )
 
+// MasterOperation will provide all rpc method for Master node.
 type MasterOperation struct {
 }
 
 // Register will allow worker to register it self from master worker, with
 // some response as reply.
 func (op MasterOperation) Register(worker Worker, response *MasterResponse) error {
-	response.Id = getNewWorkerId()
+	response.ID = getNewWorkerID()
 
 	return nil
 }

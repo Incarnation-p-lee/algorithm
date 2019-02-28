@@ -30,11 +30,14 @@ import (
 	// assert "github.com/attic-labs/noms/go/d"
 )
 
+// Master represent the Master node as rpc server.
 type Master struct {
 	addr      string
 	operation *MasterOperation
 }
 
+// Listen will register MasterOperation as rpc provide operation from
+// Master node, and listen the given address.
 func (master *Master) Listen(addr string) {
 	op := new(MasterOperation)
 

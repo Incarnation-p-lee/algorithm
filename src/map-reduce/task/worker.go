@@ -28,8 +28,10 @@ import (
 	"net/rpc"
 )
 
+// WorkerType indicates the type of worker, can be Map or Reduce worker.
 type WorkerType int32
 
+// The workerType Map and Reduce, will add more in future.
 const (
 	Map = iota
 	Reduce
@@ -39,11 +41,13 @@ const (
 	registryMethod = "MasterOperation.Register"
 )
 
+// Worker represent one worker of host machine from cluster.
 type Worker struct {
 	Type WorkerType
-	Id   int32
+	ID   int32
 }
 
+// Register Worker to remote address, and update some data from Master node.
 func (worker *Worker) Register(addr string) {
 	client, err := rpc.DialHTTP("tcp", addr)
 	if err != nil {
@@ -57,5 +61,5 @@ func (worker *Worker) Register(addr string) {
 		log.Fatalf("Failed to register to master: %s, %s", addr, err)
 	}
 
-	worker.Id = response.Id
+	worker.ID = response.ID
 }

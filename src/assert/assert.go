@@ -29,11 +29,13 @@ import (
 	"testing"
 )
 
+// That represent the assert content.
 type That struct {
 	Value interface{}
 	T     *testing.T
 }
 
+// Assertion provide the assert methods.
 type Assertion interface {
 	IsEqualsTo(expect interface{})
 }

@@ -32,6 +32,7 @@ update:
 test:$(PROFILES)
 	@export GOPATH=$(GOPATH) && gofmt -w $(SRC_FILES)
 	@cat *.cover.out > cover.out
+	@rm *.cover.out
 
 $(PROFILES):%.cover.out:%
 	@export GOPATH=`pwd` \

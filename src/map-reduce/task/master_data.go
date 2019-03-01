@@ -21,43 +21,18 @@
 // SOFTWARE.
 //
 
-package assert
+package task
 
 import (
-	"testing"
+	"sync/atomic"
 )
 
-func TestIsEqualsToPrimitive(t *testing.T) {
-	That{false, t}.IsEqualsTo(false)
-	That{true, t}.IsEqualsTo(true)
+var workerID int32
 
-	That{0, t}.IsEqualsTo(0)
-	That{1, t}.IsEqualsTo(1)
-	That{-1, t}.IsEqualsTo(-1)
+func resetWorkerID() {
+	atomic.AddInt32(&workerID, -workerID)
+}
 
-	That{int32(0), t}.IsEqualsTo(int32(0))
-	That{int32(1), t}.IsEqualsTo(int32(1))
-	That{int32(-1), t}.IsEqualsTo(int32(-1))
-
-	That{int64(0), t}.IsEqualsTo(int64(0))
-	That{int64(1), t}.IsEqualsTo(int64(1))
-	That{int64(-1), t}.IsEqualsTo(int64(-1))
-
-	That{uint(0), t}.IsEqualsTo(uint(0))
-	That{uint(1), t}.IsEqualsTo(uint(1))
-
-	That{uint32(0), t}.IsEqualsTo(uint32(0))
-	That{uint32(1), t}.IsEqualsTo(uint32(1))
-
-	That{uint64(0), t}.IsEqualsTo(uint64(0))
-	That{uint64(1), t}.IsEqualsTo(uint64(1))
-
-	That{float32(0.25), t}.IsEqualsTo(float32(0.25))
-	That{float32(1.8), t}.IsEqualsTo(float32(1.8))
-
-	That{float64(0.25), t}.IsEqualsTo(float64(0.25))
-	That{float64(1.8), t}.IsEqualsTo(float64(1.8))
-
-	That{"", t}.IsEqualsTo("")
-	That{"abcXYZ", t}.IsEqualsTo("abcXYZ")
+func getNewWorkerID() int32 {
+	return atomic.AddInt32(&workerID, 1)
 }

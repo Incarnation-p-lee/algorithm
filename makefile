@@ -1,6 +1,6 @@
 SRC_DIR   :=src/
 PKG_DIR   :=pkg/
-PACKAGES  :=number assert
+PACKAGES  :=number assert map-reduce/task
 PROFILES  :=$(addsuffix .cover.out, $(PACKAGES))
 SRC_FILES :=$(shell find $(SRC_DIR) -name *.go | grep -v vendor)
 GOPATH    :=$(shell pwd)
@@ -32,6 +32,7 @@ update:
 test:$(PROFILES)
 	@export GOPATH=$(GOPATH) && gofmt -w $(SRC_FILES)
 	@cat *.cover.out > cover.out
+	@rm *.cover.out
 
 $(PROFILES):%.cover.out:%
 	@export GOPATH=`pwd` \

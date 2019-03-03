@@ -24,6 +24,7 @@
 package task
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"net/rpc"
@@ -38,11 +39,12 @@ type Master struct {
 
 // Listen will register MasterOperation as rpc provide operation from
 // Master node, and listen the given address.
-func (master *Master) Listen(addr string) {
+func (master *Master) Listen(addr, path string) {
 	op := new(MasterOperation)
 
-	rpc.Register(op)
-	rpc.HandleHTTP()
+	server := rpc.NewServer()
+	server.Register(op)
+	server.HandleHTTP(path, fmt.Sprintf("%s/%s", path, "debug"))
 
 	master.addr = addr
 	master.operation = op

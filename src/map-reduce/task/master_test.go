@@ -62,6 +62,7 @@ func TestMasterListen(t *testing.T) {
 	for _, d := range data {
 		worker := new(Worker)
 		worker.Register(addr, path)
+
 		actual := worker.ID
 
 		assert.That{actual, t}.IsEqualsTo(d.expect)

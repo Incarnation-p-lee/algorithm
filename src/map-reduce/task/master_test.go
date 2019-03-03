@@ -25,8 +25,10 @@ package task
 
 import (
 	"assert"
+	"sort"
 	"testing"
 	"time"
+	// "log"
 )
 
 const (
@@ -50,19 +52,66 @@ func TestMasterListen(t *testing.T) {
 
 	resetWorkerID()
 
-	addr := "localhost:1234"
-	master := new(Master)
+	addr, path, master := "localhost:8000", "/TestMasterListen", new(Master)
 
-	go master.Listen(addr)
+	go master.Listen(addr, path)
 	time.Sleep(delay) // Make sure rpc server is ready.
 
 	assert.That{master.addr, t}.IsEqualsTo(addr)
 
 	for _, d := range data {
 		worker := new(Worker)
-		worker.Register("localhost:1234")
+		worker.Register(addr, path)
 		actual := worker.ID
 
 		assert.That{actual, t}.IsEqualsTo(d.expect)
+	}
+}
+
+func TestMasterListenParallel(t *testing.T) {
+	var data = []struct {
+		expect int
+	}{
+		{1},
+		{2},
+		{3},
+		{4},
+		{5},
+		{6},
+		{7},
+		{8},
+		{9},
+	}
+
+	resetWorkerID()
+
+	addr, path, master := "localhost:8001", "/TestMasterListenParallel", new(Master)
+
+	go master.Listen(addr, path)
+	time.Sleep(delay) // Make sure rpc server is ready.
+
+	assert.That{master.addr, t}.IsEqualsTo(addr)
+
+	var workers []*Worker
+
+	for i := 0; i < len(data); i++ {
+		w := new(Worker)
+		workers = append(workers, w)
+
+		go w.Register(addr, path)
+	}
+
+	time.Sleep(delay) // Make sure all work registered
+
+	var ids []int
+
+	for _, w := range workers {
+		ids = append(ids, int(w.ID))
+	}
+
+	sort.Ints(ids)
+
+	for i, id := range ids {
+		assert.That{id, t}.IsEqualsTo(data[i].expect)
 	}
 }

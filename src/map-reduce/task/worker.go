@@ -48,8 +48,8 @@ type Worker struct {
 }
 
 // Register Worker to remote address, and update some data from Master node.
-func (worker *Worker) Register(addr string) {
-	client, err := rpc.DialHTTP("tcp", addr)
+func (worker *Worker) Register(addr, path string) {
+	client, err := rpc.DialHTTPPath("tcp", addr, path)
 	if err != nil {
 		log.Fatalf("Failed to dial address %s, %s", addr, err)
 	}
